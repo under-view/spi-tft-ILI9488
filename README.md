@@ -1,4 +1,4 @@
-# ILI9488
+# SPI TFT ILI9488
 
 Out Of Tree SPI TFT Display Driver for ILI9488 3.5" 480x320 Panels.
 
