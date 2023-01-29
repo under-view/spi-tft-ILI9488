@@ -2,28 +2,30 @@
 
 #include <linux/init.h>
 #include <linux/module.h>
-#include <linux/utsname.h>
-#include <linux/timekeeping.h>
+#include <linux/spi/spi.h>
 
-static char *who = "Underview";
-module_param(who, charp, 0644);
-MODULE_PARM_DESC(who, "nice to meet");
-
-static time64_t init_time;
-
-static int __init hello_init(void)
+static int ili9488_probe(struct spi_device *spidev)
 {
-	pr_info("Hello %s. You are currently using Linux %s.\n", who, utsname()->release);
-	init_time = ktime_get_seconds();
 	return 0;
 }
 
-static void hello_exit(void)
+
+static void ili9488_remove(struct spi_device *spidev)
 {
-	pr_info("Goodbye %s. Ths modules lived %lld seconds\n", who, ktime_get_seconds() - init_time);
+	return;
 }
 
-module_init(hello_init);
-module_exit(hello_exit);
+/* Driver declaration */
+static struct spi_driver ili9488_driver = {
+	.driver = {
+		.name = "ili9488",
+		.owner = THIS_MODULE,
+	},
+	.probe = ili9488_probe,
+	.remove = ili9488_remove,
+};
+
+module_spi_driver(ili9488_driver);
+
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Underview");
