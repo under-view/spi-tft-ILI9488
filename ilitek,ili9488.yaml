@@ -65,7 +65,8 @@ examples:
                     spi-max-frequency = <32000000>;
                     dc-gpios = <&gpio0 24 GPIO_ACTIVE_HIGH>;
                     reset-gpios = <&gpio0 25 GPIO_ACTIVE_HIGH>;
-                    rotation = <180>;                                                                                                                                          backlight = <&backlight>;
+                    rotation = <180>;
+                    backlight = <&backlight>;
             };
     };
 ...
