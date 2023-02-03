@@ -1,8 +1,11 @@
 MODULE_NAME = ili9488
 DTS_FNAME = $(MODULE_NAME).dts
-DTS_TEMP_FNAME = $(MODULE_NAME).tmp.dts
+DTS_TEMP_FNAME = .$(MODULE_NAME).dtb.dts.tmp
+DTB_PRE_TEMP_FNAME = .$(MODULE_NAME).dtb.d.pre.tmp
 DTB_FNAME = $(MODULE_NAME).dtb
+
 DTC ?= dtc
+DTC_FLAGS ?=
 
 # CFLAGS_$(MODULE_NAME).o += -I$(PWD)
 
@@ -23,10 +26,21 @@ endif
 all: dtb
 	$(MAKE) -C $(KSRC) M=$$PWD
 
-# https://linux-sunxi.org/Device_Tree#Compiling_the_Device_Tree
 dtb:
-	$(CPP) -nostdinc -I include -undef -x assembler-with-cpp -I$(KSRC)/include $(PWD)/$(DTS_FNAME) > $(PWD)/$(DTS_TEMP_FNAME)
-	$(DTC) -O dtb -b 0 -o $(PWD)/$(DTB_FNAME) $(PWD)/$(DTS_TEMP_FNAME)
+	$(CPP) -E -Wp,-MMD,$(PWD)/$(DTB_PRE_TEMP_FNAME) \
+	       -undef -D__DTS__ -x assembler-with-cpp -nostdinc \
+	       -I$(KSRC)/scripts/dtc/include-prefixes \
+	       -I$(KSRC)/arch/$(ARCH)/boot/dts \
+	       -o $(PWD)/$(DTS_TEMP_FNAME) \
+	       $(PWD)/$(DTS_FNAME)
+
+	$(DTC) -o $(PWD)/$(DTB_FNAME) -O dtb -b 0 \
+	       -i$(KSRC)/arch/$(ARCH)/boot/dts \
+	       -i$(KSRC)/scripts/dtc/include-prefixes \
+	       -Wno-interrupt_provider -Wno-unit_address_vs_reg -Wno-avoid_unnecessary_addr_size \
+	       -Wno-alias_paths -Wno-graph_child_address -Wno-simple_bus_reg -Wno-unique_unit_address \
+	       $(DTC_FLAGS) $(PWD)/$(DTS_TEMP_FNAME)
+
 	$(RM) $(PWD)/$(DTS_TEMP_FNAME)
 
 clean:
@@ -38,3 +52,4 @@ clean:
 	$(RM) $(PWD)/.mod*
 	$(RM) $(PWD)/.Mod*
 	$(RM) $(PWD)/.$(MODULE_NAME)*
+	$(RM) $(PWD)/*.dtb
