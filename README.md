@@ -13,8 +13,6 @@ can build the driver via.
 ```sh
 $ source openembedded-core/oe-init-build-env $(pwd)/build
 $ bitbake ili9488
-$ bitbake ili9488 -c devshell
-$ make DTC=yamldt DT_SCHEMA_FILES=ilitek,ili9488.yaml dtbs
 ```
 
 Or you can
@@ -24,13 +22,4 @@ Or you can
 # May look something like bellow
 $ cd tmp/work/udoo_bolt_emmc-northstar-linux/ili9488/0.0.1-git+b9d43fbe2a6a05a29bfa13d244a8573a3ade20c3-r0/git
 $ ../temp/run.do_compile
-```
-
-**Dependencies**
-```sh
-# Arch Linux
-$ sudo pacman -S swig python
-# Debian
-$ sudo apt install swig python3-dev
-$ pip3 install dtschema
 ```
