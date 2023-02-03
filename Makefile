@@ -42,6 +42,7 @@ dtb:
 	       $(DTC_FLAGS) $(PWD)/$(DTS_TEMP_FNAME)
 
 	$(RM) $(PWD)/$(DTS_TEMP_FNAME)
+	$(RM) $(PWD)/$(DTB_PRE_TEMP_FNAME)
 
 clean:
 	$(RM) $(PWD)/*.o
