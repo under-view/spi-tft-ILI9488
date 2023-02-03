@@ -2,6 +2,7 @@ MODULE_NAME = ili9488
 DTS_FNAME = $(MODULE_NAME).dts
 DTS_TEMP_FNAME = $(MODULE_NAME).tmp.dts
 DTB_FNAME = $(MODULE_NAME).dtb
+DTC ?= dtc
 
 # CFLAGS_$(MODULE_NAME).o += -I$(PWD)
 
@@ -25,7 +26,7 @@ all: dtb
 # https://linux-sunxi.org/Device_Tree#Compiling_the_Device_Tree
 dtb:
 	$(CPP) -nostdinc -I include -undef -x assembler-with-cpp -I$(KSRC)/include $(PWD)/$(DTS_FNAME) > $(PWD)/$(DTS_TEMP_FNAME)
-	dtc -O dtb -b 0 -o $(PWD)/$(DTB_FNAME) $(PWD)/$(DTS_TEMP_FNAME)
+	$(DTC) -O dtb -b 0 -o $(PWD)/$(DTB_FNAME) $(PWD)/$(DTS_TEMP_FNAME)
 	$(RM) $(PWD)/$(DTS_TEMP_FNAME)
 
 clean:
