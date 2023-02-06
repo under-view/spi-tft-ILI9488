@@ -1,11 +1,17 @@
 MODULE_NAME = ili9488
+MACHINE ?= udoo-bolt
+
+DTC ?= dtc
+DTC_FLAGS ?=
 DTS_FNAME = $(MODULE_NAME).dts
 DTS_TEMP_FNAME = .$(MODULE_NAME).dtb.dts.tmp
 DTB_PRE_TEMP_FNAME = .$(MODULE_NAME).dtb.d.pre.tmp
 DTB_FNAME = $(MODULE_NAME).dtb
 
-DTC ?= dtc
-DTC_FLAGS ?=
+ASL ?= iasl
+ASL_FLAGS ?=
+ASL_FNAME = $(MODULE_NAME).asl
+AML_FNAME = $(MODULE_NAME).aml
 
 # CFLAGS_$(MODULE_NAME).o += -I$(PWD)
 
@@ -23,8 +29,11 @@ endif
 # then interpreted with KERNELRELEASE defined, so the kernel sees the obj-m
 # definition.
 
-all: dtb
+all:
 	$(MAKE) -C $(KSRC) M=$$PWD
+
+aml:
+	$(ASL) $(PWD)/acpi-tables/$(MACHINE)/$(ASL_FNAME)
 
 dtb:
 	$(CPP) -E -Wp,-MMD,$(PWD)/$(DTB_PRE_TEMP_FNAME) \
@@ -32,7 +41,7 @@ dtb:
 	       -I$(KSRC)/scripts/dtc/include-prefixes \
 	       -I$(KSRC)/arch/$(ARCH)/boot/dts \
 	       -o $(PWD)/$(DTS_TEMP_FNAME) \
-	       $(PWD)/$(DTS_FNAME)
+	       $(PWD)/devicetrees/$(MACHINE)/$(DTS_FNAME)
 
 	$(DTC) -o $(PWD)/$(DTB_FNAME) -O dtb -b 0 \
 	       -i$(KSRC)/arch/$(ARCH)/boot/dts \
@@ -54,3 +63,4 @@ clean:
 	$(RM) $(PWD)/.Mod*
 	$(RM) $(PWD)/.$(MODULE_NAME)*
 	$(RM) $(PWD)/*.dtb
+	$(RM) $(PWD)/*.aml
