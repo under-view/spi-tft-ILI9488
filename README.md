@@ -10,6 +10,8 @@ Development is done with kernel version 5.19.17. Utilizing the yocto project and
 [ili9488.bb](https://github.com/under-view/meta-underview/blob/master/recipes-kernel/drivers/ili9488.bb). One
 can build the driver via.
 
+### Building
+**Compile Kernel Module**
 ```sh
 $ source openembedded-core/oe-init-build-env $(pwd)/build
 $ bitbake ili9488
@@ -22,4 +24,13 @@ Or you can
 # May look something like bellow
 $ cd tmp/work/udoo_bolt_emmc-northstar-linux/ili9488/0.0.1-git+b9d43fbe2a6a05a29bfa13d244a8573a3ade20c3-r0/git
 $ ../temp/run.do_compile
+```
+
+**Compile DTS/ASL**
+```sh
+# Compile Device Tree Source to Device Tree Blob
+$ KSRC="/usr/src/kernel" make dtb
+
+# Compile ACPI Source Language to ACPI Machine Language
+$ make aml
 ```
