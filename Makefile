@@ -1,5 +1,5 @@
 MODULE_NAME = ili9488
-MACHINE ?= udoo-bolt
+MACH ?= udoo-bolt
 
 DTC ?= dtc
 DTC_FLAGS ?=
@@ -33,17 +33,20 @@ all:
 	$(MAKE) -C $(KSRC) M=$$PWD
 
 aml:
-	$(ASL) $(PWD)/acpi-tables/$(MACHINE)/$(ASL_FNAME)
+	$(ASL) $(PWD)/acpi-tables/$(MACH)/$(ASL_FNAME)
+	mv $(PWD)/acpi-tables/$(MACH)/$(AML_FNAME) $(PWD)/$(AML_FNAME)
 
 dtb:
 	$(CPP) -E -Wp,-MMD,$(PWD)/$(DTB_PRE_TEMP_FNAME) \
 	       -undef -D__DTS__ -x assembler-with-cpp -nostdinc \
-	       -I$(KSRC)/scripts/dtc/include-prefixes \
+	       -I$(KSRC)/include \
 	       -I$(KSRC)/arch/$(ARCH)/boot/dts \
+	       -I$(KSRC)/scripts/dtc/include-prefixes \
 	       -o $(PWD)/$(DTS_TEMP_FNAME) \
-	       $(PWD)/devicetrees/$(MACHINE)/$(DTS_FNAME)
+	       $(PWD)/devicetrees/$(MACH)/$(DTS_FNAME)
 
 	$(DTC) -o $(PWD)/$(DTB_FNAME) -O dtb -b 0 \
+	       -i$(KSRC)/include \
 	       -i$(KSRC)/arch/$(ARCH)/boot/dts \
 	       -i$(KSRC)/scripts/dtc/include-prefixes \
 	       -Wno-interrupt_provider -Wno-unit_address_vs_reg -Wno-avoid_unnecessary_addr_size \
