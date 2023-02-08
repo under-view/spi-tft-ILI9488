@@ -19,7 +19,13 @@
 
 static int ili9488_probe(struct spi_device *spidev)
 {
-	struct device *device = NULL;
+	struct device *device;
+	struct drm_device *drm;
+	struct mipi_dbi *dbi; // (MIPI) Mobile Industry Processor Interface - (DPI) Display Bus Interface
+	struct mipi_dbi_dev *dbidev;
+	struct gpio_desc *dc;
+	u32 rotation = 0;
+	int ret;
 
 	device = &spidev->dev;
 
@@ -39,6 +45,13 @@ static const struct of_device_id ili9488_of_match[] = {
 
 MODULE_DEVICE_TABLE(of, ili9488_of_match);
 
+static const struct acpi_device_id ili9488_acpi_match[] = {
+	{ }
+};
+
+MODULE_DEVICE_TABLE(acpi, ili9488_acpi_match);
+
+
 static const struct spi_device_id ili9488_spi_id[] = {
 	{ "ili9488", 0 },
 	{ }
@@ -51,7 +64,11 @@ static struct spi_driver ili9488_spi_driver = {
 	.driver = {
 		.name = "ili9488",
 		.owner = THIS_MODULE,
+#ifdef ACPI_DEVICE_ENUM
+		.acpi_match_table = ili9488_acpi_match,
+#else
 		.of_match_table = ili9488_of_match,
+#endif
 	},
 	.id_table = ili9488_spi_id,
 	.probe = ili9488_probe,
@@ -59,6 +76,7 @@ static struct spi_driver ili9488_spi_driver = {
 };
 
 module_spi_driver(ili9488_spi_driver);
+
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Underview");
