@@ -45,7 +45,13 @@ static const struct of_device_id ili9488_of_match[] = {
 
 MODULE_DEVICE_TABLE(of, ili9488_of_match);
 
+/*
+ * Make compatible with ACPI SSDT via the
+ * Compatible ID (_CID) name object
+ */
 static const struct acpi_device_id ili9488_acpi_match[] = {
+	{ "ili9488", 0 },
+	{ "ILI9488", 0 },
 	{ }
 };
 
