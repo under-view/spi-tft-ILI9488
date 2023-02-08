@@ -12,13 +12,14 @@ can build the driver via.
 
 ### Building
 **Compile Kernel Module**
+```
+# On target
+$ KSRC="/lib/modules/$(uname -r)/build" make
+```
 ```sh
 $ source openembedded-core/oe-init-build-env $(pwd)/build
 $ bitbake ili9488
 ```
-
-Or you can
-
 ```sh
 # cd into working directory + git folder
 # May look something like bellow
@@ -29,8 +30,21 @@ $ ../temp/run.do_compile
 **Compile DTS/ASL**
 ```sh
 # Compile Device Tree Source to Device Tree Blob
-$ KSRC="/usr/src/kernel" make dtb
+$ KSRC="/lib/modules/$(uname -r)/build" make dtb
 
 # Compile ACPI Source Language to ACPI Machine Language
 $ make aml
+```
+
+**Testing AML file**
+```sh
+# First Gather, Extract, & Disassemble ACPI Tables
+$ acpidump > acpi.log
+$ acpixtract acpi.log
+
+# To get source of all DSDT/SSDT
+$ iasl -d *.dat > /dev/null 2>&1
+
+# Execute
+$ acpiexec *.{dat,aml}
 ```
