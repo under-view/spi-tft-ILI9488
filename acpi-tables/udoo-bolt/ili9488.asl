@@ -30,12 +30,12 @@ DefinitionBlock ("ili9488.aml", "SSDT", 5, "", "ILI9488", 0x1)
 		Device (TFTD)
 		{
 			Name (DESC, "ili9488 Driver Chip Based TFT LCD ACPI Device Scope")
-			Name (_ADR, 1)              // Device address on parent bus. This bus is SPI so no address.
+			Name (_ADR, Zero)           // Device address on parent bus. This bus is SPI so no address.
 			Name (_CID, Package() {     // Compatible ID (Array of ASL objects. These Objects being strings.)
 				"ILI9488",
 				"ili9488",
 			})
-			Name (_CRS, ResourceTemplate() { // Current Resource Settins
+			Name (_CRS, ResourceTemplate() { // Current Resource Settings (ACPI Resource to Buffer function)
 				SpiSerialBus(
 					0,                    // Chip Select
 					PolarityLow,          // Chip Select is Active Low
@@ -48,8 +48,19 @@ DefinitionBlock ("ili9488.aml", "SSDT", 5, "", "ILI9488", 0x1)
 					"\\_SB.PCI0.SPI1",    // SPI bus host controller name (unconfirmed)
 					0                     // Resource Index. Should be 0
 				)
-				GpioIo (Exclusive, PullNone, 0, 0, IoRestrictionOutputOnly, "\\_SB.PCI0.GPI0", 0, ResourceConsumer, , ) { 13 }
-				GpioIo (Exclusive, PullUp,   0, 0, IoRestrictionOutputOnly, "\\_SB.PCI0.GPI0", 0, ResourceConsumer, , ) { 15 }
+				// _SB.GPIO: GPIO bus host controller (unconfirmed)
+				GpioIo (Exclusive, PullNone, 0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 13 }
+				GpioIo (Exclusive, PullUp,   0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 15 }
+			})
+			// https://docs.kernel.org/firmware-guide/acpi/gpio-properties.html
+			Name (_DSD, Package() {
+				ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"), // Not actual
+				Package()
+				{
+					// Label Pins: <Device Reference>, <index in _CRS Buff>, <pin index GpioIO Resource>, <GPIO line status>
+					Package() { "dc-rs-pin", Package() { ^TFTD, 1, 0, 0 } },
+					Package() { "reset-pin", Package() { ^TFTD, 2, 0, 0 } }
+				}
 			})
 		}
 	}
