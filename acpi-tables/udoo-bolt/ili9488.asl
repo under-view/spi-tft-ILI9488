@@ -10,7 +10,7 @@
  *   GPIO_SPI_MISO         1                    Not Connected
  *   GPIO_SPI_MOSI         3                    SDI (MOSI)
  *   GPIO_SPI_CLK          4                    SCK
- *   GPIO_KSO0             13                   DC/RS
+ *   GPIO_KSO0             13                   DC/RS (Data Command)
  *   GPIO_KSO1             15                   Reset
  *
  * Original Table Headers: ili9488 TFT 3.5" LCD Table
@@ -53,10 +53,12 @@ DefinitionBlock ("ili9488.aml", "SSDT", 5, "", "ILI9488", 0x1)
 				GpioIo (Exclusive, PullUp,   0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 15 }
 			})
 			// https://docs.kernel.org/firmware-guide/acpi/gpio-properties.html
-			Name (_DSD, Package() {
+			Name (_DSD, Package() { // Device Specific Data
 				ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"), // Not actual
 				Package()
 				{
+					// Define compatible property
+					Package () { "compatible", Package () { "garosa,garosanvkr25fawd" } },
 					// Label Pins: <Device Reference>, <index in _CRS Buff>, <pin index GpioIO Resource>, <GPIO line status>
 					Package() { "dc-rs-pin", Package() { ^TFTD, 1, 0, 0 } },
 					Package() { "reset-pin", Package() { ^TFTD, 2, 0, 0 } }
