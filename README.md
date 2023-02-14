@@ -48,3 +48,17 @@ $ iasl -d *.dat > /dev/null 2>&1
 # Execute
 $ acpiexec *.{dat,aml}
 ```
+
+SSDT overlays: Run-time ConfigFS approach
+
+```sh
+# Mount ConfigFS
+$ mount -t configfs none /sys/kernel/config
+
+# Load ACPI ConfigFS support (if it’s a module)
+$ modprobe acpi-configfs
+
+# Allocate a new SSDT
+$ mkdir -p /sys/kernel/config/acpi/table/ili9488
+$ cat "ili9488.aml" > "/sys/kernel/config/acpi/table/ili9488/aml
+```
