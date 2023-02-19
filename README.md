@@ -60,5 +60,5 @@ $ modprobe acpi-configfs
 
 # Allocate a new SSDT
 $ mkdir -p /sys/kernel/config/acpi/table/ili9488
-$ cat "ili9488.aml" > "/sys/kernel/config/acpi/table/ili9488/aml
+$ cat "ili9488.aml" > "/sys/kernel/config/acpi/table/ili9488/aml"
 ```

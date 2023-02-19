@@ -49,8 +49,8 @@ DefinitionBlock ("ili9488.aml", "SSDT", 5, "", "ILI9488", 0x1)
 					0                     // Resource Index. Should be 0
 				)
 				// _SB.GPIO: GPIO bus host controller (unconfirmed)
-				GpioIo (Exclusive, PullNone, 0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 13 }
-				GpioIo (Exclusive, PullUp,   0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 15 }
+				GpioIo (Exclusive, PullNone, 0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 40 } // Pin 13
+				GpioIo (Exclusive, PullUp,   0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 45 } // Pin 15
 			})
 			// https://docs.kernel.org/firmware-guide/acpi/gpio-properties.html
 			Name (_DSD, Package() { // Device Specific Data
