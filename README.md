@@ -6,7 +6,7 @@ Out Of Tree DRM Driver for ILI9488 Driver Chip Based TFT 3.5" 480x320 LCDs that 
 [by Kamlesh Gurudasani](https://lore.kernel.org/all/cover.1592055494.git.kamlesh.gurudasani@gmail.com/T/#t).
 This is just my implementation that works with the udoo-bolt.
 
-Development is done with kernel version 5.19.17. Utilizing the yocto project and a BitBake recipe called
+Development is done with kernel version 6.1.9. Utilizing the yocto project and a BitBake recipe called
 [ili9488.bb](https://github.com/under-view/meta-underview/blob/master/recipes-kernel/drivers/ili9488.bb). One
 can build the driver via.
 
