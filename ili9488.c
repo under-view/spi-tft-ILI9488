@@ -70,11 +70,8 @@ static struct spi_driver ili9488_spi_driver = {
 	.driver = {
 		.name = "ili9488",
 		.owner = THIS_MODULE,
-#ifdef ACPI_DEVICE_ENUM
 		.acpi_match_table = ili9488_acpi_match,
-#else
 		.of_match_table = ili9488_of_match,
-#endif
 	},
 	.id_table = ili9488_spi_id,
 	.probe = ili9488_probe,
@@ -82,7 +79,6 @@ static struct spi_driver ili9488_spi_driver = {
 };
 
 module_spi_driver(ili9488_spi_driver);
-
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Underview");
