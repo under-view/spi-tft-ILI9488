@@ -1,4 +1,5 @@
 MODULE_NAME = ili9488
+PWD = $(shell pwd)
 MACH ?= udoo-bolt
 
 DTC ?= dtc
