@@ -12,7 +12,7 @@ can build the driver via.
 
 ### Building
 **Compile Kernel Module**
-```
+```sh
 # On target
 $ KSRC="/lib/modules/$(uname -r)/build" make
 ```
@@ -52,13 +52,23 @@ $ acpiexec *.{dat,aml}
 SSDT overlays: Run-time ConfigFS approach
 
 ```sh
+# If desire alias for loading and unloading ACPI SSDT
+$ source devutils/compile-load-alias
+
 # Mount ConfigFS
 $ mount -t configfs none /sys/kernel/config
 
 # Load ACPI ConfigFS support (if it’s a module)
 $ modprobe acpi-configfs
 
-# Allocate a new SSDT
+# Load SSDT
 $ mkdir -p /sys/kernel/config/acpi/table/ili9488
 $ cat "ili9488.aml" > "/sys/kernel/config/acpi/table/ili9488/aml"
+# OR
+$ load_ili9488_aml
+
+# Unload SSDT
+$ ./devutils/unload-acpi-table /sys/kernel/config/acpi/table/ili9488
+# OR
+$ unload_ili9488_aml
 ```
