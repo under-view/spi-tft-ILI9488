@@ -45,19 +45,8 @@ static const struct of_device_id ili9488_of_match[] = {
 
 MODULE_DEVICE_TABLE(of, ili9488_of_match);
 
-/*
- * Make compatible with ACPI SSDT via the
- * Compatible ID (_CID) name object
- */
-static const struct acpi_device_id ili9488_acpi_match[] = {
-	{ "ILI9488", 0 },
-	{ }
-};
-
-MODULE_DEVICE_TABLE(acpi, ili9488_acpi_match);
-
 static const struct spi_device_id ili9488_spi_devid[] = {
-	{ "ILI9488", 0 },
+	{ "garosanvkr25fawd", 0 },
 	{ }
 };
 
@@ -67,7 +56,6 @@ MODULE_DEVICE_TABLE(spi, ili9488_spi_devid);
 static struct spi_driver ili9488_spi_driver = {
 	.driver = {
 		.name = "ili9488",
-		.acpi_match_table = ili9488_acpi_match,
 		.of_match_table = ili9488_of_match,
 	},
 	.id_table = ili9488_spi_devid,
