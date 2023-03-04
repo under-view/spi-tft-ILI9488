@@ -25,11 +25,10 @@ DefinitionBlock ("ili9488.aml", "SSDT", 5, "", "ILI9488", 0x1)
 {
 	Device (TFTD)
 	{
-		Name (_HID, "ILI9488")  // _HID: Hardware ID
-		Name (_CID, "ILI9488")  // _CID: Compatible ID
-		Name (_UID, One)        // _UID: Unique ID
+		Name (_UID, One)       // _UID: Unique ID
+		Name (_HID, "PRP0001") // _HID: Hardware ID
 
-		Name (_DSD, Package() { // Device Specific Data - used to return EC static resources (Defined in _CRS) to the driver.
+		Name (_DSD, Package() { // Device Specific Data - used to return ILI9488 driver chip static resources (Defined in _CRS) to the device driver.
 			/*
 			 * Known as the Device Properties UUID
 			 * A generic UUID recognized by the ACPI subsystem in the Linux kernel which automatically
@@ -39,7 +38,7 @@ DefinitionBlock ("ili9488.aml", "SSDT", 5, "", "ILI9488", 0x1)
 			ToUUID("daffd814-6eba-4d8c-8a91-bc9bbf4aa301"),
 			Package()
 			{
-				// Define compatible property (Not actually used CONFIG_OF not set)
+				// Define compatible property
 				Package () { "compatible", Package () { "garosa,garosanvkr25fawd" } },
 				Package () { "size", 1024 },
 				Package () { "pagesize", 32 },
@@ -47,25 +46,22 @@ DefinitionBlock ("ili9488.aml", "SSDT", 5, "", "ILI9488", 0x1)
 			}
 		})
 
-		Method (_CRS, 0, Serialized) {
-			local0 = ResourceTemplate() { // Current Resource Settings (ACPI Resource to Buffer function)
-				SpiSerialBus(
-					0,                    // Chip Select
-					PolarityLow,          // Chip Select is Active Low
-					FourWireMode,         // Full Duplex Mode (MISO Unused)
-					8,                    // 8-bits per word (1 byte)
-					ControllerInitiated,  // Slave Mode
-					32000000,             // 32 MHz
-					ClockPolarityLow,     // SPI Mode 0
-					ClockPhaseFirst,      // SPI Mode 0
-					"\\EC17.SPI0",        // SPI bus host controller name (unconfirmed)
-					0                     // Resource Index. Should be 0
-				)
-				// _SB.GPIO: GPIO bus host controller (unconfirmed)
-				GpioIo (Exclusive, PullNone, 0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 40 } // Pin 13
-				GpioIo (Exclusive, PullUp,   0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 45 } // Pin 15
-			}
-			Return(local0)
-		}
+		Name (_CRS, ResourceTemplate() { // Current Resource Settings (ACPI Resource to Buffer function)
+			SpiSerialBus(
+				0,                    // Chip Select
+				PolarityLow,          // Chip Select is Active Low
+				FourWireMode,         // Full Duplex Mode (MISO Unused)
+				8,                    // 8-bits per word (1 byte)
+				ControllerInitiated,  // Slave Mode
+				32000000,             // 32 MHz
+				ClockPolarityLow,     // SPI Mode 0
+				ClockPhaseFirst,      // SPI Mode 0
+				"\\EC17.SPI0",        // SPI bus host controller name (unconfirmed)
+				0                     // Resource Index. Should be 0
+			)
+			// _SB.GPIO: GPIO bus host controller (unconfirmed)
+			GpioIo (Exclusive, PullNone, 0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 40 } // Pin 13
+			GpioIo (Exclusive, PullUp,   0, 0, IoRestrictionOutputOnly, "\\_SB.GPI0", 0, ResourceConsumer, , ) { 45 } // Pin 15
+		})
 	}
 }
