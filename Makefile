@@ -15,6 +15,7 @@ AML_FNAME = $(MODULE_NAME).aml
 
 ifneq ($(KERNELRELEASE),)
 	obj-m := $(MODULE_NAME).o
+	$(MODULE_NAME)-objs := $(MODULE_NAME)_main.o
 else
 	KSRC ?= $(PWD)
 endif
