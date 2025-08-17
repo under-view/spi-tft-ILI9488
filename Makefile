@@ -36,13 +36,13 @@ aml:
 	mv $(PWD)/acpi-tables/$(ARCH)/$(AML_FNAME) $(PWD)/$(AML_FNAME)
 
 dtb:
-	$(CPP) -E -Wp,-MMD,$(PWD)/$(DTB_PRE_TEMP_FNAME) \
-	       -undef -D__DTS__ -x assembler-with-cpp -nostdinc \
-	       -I$(KSRC)/include \
-	       -I$(KSRC)/arch/$(ARCH)/boot/dts \
-	       -I$(KSRC)/scripts/dtc/include-prefixes \
-	       -o $(PWD)/$(DTS_TEMP_FNAME) \
-	       $(PWD)/devicetrees/$(ARCH)/$(DTS_FNAME)
+	$(CC) -E -Wp,-MMD,$(PWD)/$(DTB_PRE_TEMP_FNAME) \
+	      -undef -D__DTS__ -x assembler-with-cpp -nostdinc \
+	      -I$(KSRC)/include \
+	      -I$(KSRC)/arch/$(ARCH)/boot/dts \
+	      -I$(KSRC)/scripts/dtc/include-prefixes \
+	      -o $(PWD)/$(DTS_TEMP_FNAME) \
+	      $(PWD)/devicetrees/$(ARCH)/$(DTS_FNAME)
 
 	$(DTC) -o $(PWD)/$(DTB_FNAME) -O dtb -b 0 \
 	       -i$(KSRC)/include \
