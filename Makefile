@@ -1,6 +1,6 @@
 MODULE_NAME = ili9488
 PWD = $(shell pwd)
-MACH ?= udoo-bolt
+ARCH ?= arm
 
 DTC ?= dtc
 DTC_FLAGS ?=
@@ -32,8 +32,8 @@ all:
 	$(MAKE) -C $(KSRC) M=$$PWD
 
 aml:
-	$(ASL) $(PWD)/acpi-tables/$(MACH)/$(ASL_FNAME)
-	mv $(PWD)/acpi-tables/$(MACH)/$(AML_FNAME) $(PWD)/$(AML_FNAME)
+	$(ASL) $(PWD)/acpi-tables/$(ARCH)/$(ASL_FNAME)
+	mv $(PWD)/acpi-tables/$(ARCH)/$(AML_FNAME) $(PWD)/$(AML_FNAME)
 
 dtb:
 	$(CPP) -E -Wp,-MMD,$(PWD)/$(DTB_PRE_TEMP_FNAME) \
@@ -42,7 +42,7 @@ dtb:
 	       -I$(KSRC)/arch/$(ARCH)/boot/dts \
 	       -I$(KSRC)/scripts/dtc/include-prefixes \
 	       -o $(PWD)/$(DTS_TEMP_FNAME) \
-	       $(PWD)/devicetrees/$(MACH)/$(DTS_FNAME)
+	       $(PWD)/devicetrees/$(ARCH)/$(DTS_FNAME)
 
 	$(DTC) -o $(PWD)/$(DTB_FNAME) -O dtb -b 0 \
 	       -i$(KSRC)/include \
