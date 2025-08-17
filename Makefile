@@ -64,13 +64,6 @@ dtb:
 	$(RM) $(PWD)/$(DTB_PRE_TEMP_FNAME)
 
 clean:
-	$(RM) $(PWD)/*.o
-	$(RM) $(PWD)/*.ko
-	$(RM) $(PWD)/*.order
-	$(RM) $(PWD)/*.symvers
-	$(RM) $(PWD)/*.mod*
-	$(RM) $(PWD)/.mod*
-	$(RM) $(PWD)/.Mod*
-	$(RM) $(PWD)/.$(MODULE_NAME)*
+	$(MAKE) -C $(KSRC) M=$$PWD clean
 	$(RM) $(PWD)/*.dtb
 	$(RM) $(PWD)/*.aml
