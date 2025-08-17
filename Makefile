@@ -1,5 +1,4 @@
 MODULE_NAME = ili9488
-PWD = $(shell pwd)
 ARCH ?= arm
 
 DTC ?= dtc
